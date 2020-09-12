@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>My first three.js project</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<dody>
+  <script type="module">
+     import * as THREE from 'https://unpkg.com/three@0.120/build/three.module.js';
+
+      const scene = new THREE.Scene()
+    // Perspectiveというのはどういう意味だろうか？
+    // 直訳だと、遠近法、見通し
+    // 他のカメラもいっぱいあるがどうもピント来ない名前。
+    // ArrayCamera
+    // Camera
+    // CubeCamera
+    // OrthographicCamera
+    // PerspectiveCamera
+    // StereoCamera
+    // まあ、たぶん絵の切り取り方が変わるのだろう。
+    // 動いてからカメラ変えてみればわかるか。コンストラクタ引数が変わるなら試しづらいですね
+    // 視野角、アスペクト比、クリッピングポイントを指定する。
+    // クリッピングポイントというのはそのそとのオブジェクトを無視する境界。
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    // WebGL以外のレンダラーもあるのだろうか？
+    // 1？1？ってなんだ？謎が深まる
+    // WebGLRenderer
+    // WebGL1Renderer
+    const renderer = new THREE.WebGLRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Cubeを書くためだけのジオメトリらしい。
+    // こいつのサイズってなんなんだ？
+    // ジオメトリには点と面の情報があるらしい
+    const geometry = new THREE.BoxGeometry();
+    // マテリアルにも種類があるらしい。Meshだけだと思ってましたわ。
+    // かなり数がある。これはだいぶ端折って教えてもらった感じですな。
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    // なんでメッシュっていうんでしょうね？名前に馴染みが無くて難しいなあ。
+    const cube = new THREE.Mesh(geometry, material)
+    scene.add(cube)
+
+    // 何だこの数値？
+    // 値を大きくすると四角が小さくなる。カメラとオブジェクトの距離っぽい。
+    // カメラが手前方向に移動するらしい
+    camera.position.z = 5
+    // カメラが右方向に移動する
+    camera.position.x = 1
+    // カメラが上方向に移動する
+    camera.position.y = 1
+
+    // ここまでだとまだ何も表示されません。
+    // renderer.renderを呼ぶと描画されます。
+    function animate() {
+      requestAnimationFrame(animate);
+
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</dody>
+
+</html>
