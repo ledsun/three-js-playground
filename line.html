@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <title>Draw lines</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<dody>
+  <script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.120/build/three.module.js'
+
+    // この辺は全画面表示するときのお決まりみたいです。
+    const renderer = new THREE.WebGLRenderer()
+    // 指定した値がそのまま出力されるcanvasのサイズになるんだと思います。
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    // canvas要素が帰ってきます。
+    document.body.appendChild(renderer.domElement)
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500)
+    camera.position.set(0, 0, 100)
+    camera.lookAt(0, 10, 0)
+
+    const scene = new THREE.Scene()
+
+    // LineBasicMaterialのオプションはWebGLでは、あまり使えないらしい。
+    // LineDashedMaterialにしても破線にならない。どういう制約なのだろうか？
+    const material = new THREE.LineBasicMaterial({
+      color: 0xff00ff
+    })
+
+    // 頂点を並べるとそれをつなぐ直線が描かれるらしい。
+    const points = []
+    points.push(new THREE.Vector3(-10, 0, 0))
+    points.push(new THREE.Vector3(0, 10, 0))
+    points.push(new THREE.Vector3(10, 0, 0))
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points)
+
+    // やはりジオメトリとマテリアルで図形ができるらしい。
+    // ジオメトリはSVGと似ている。マテリアルが分かれている点は違う。
+    // マテリアルを変えるとなにかが変わるのだろうけど、今の所謎
+    const line = new THREE.Line(geometry, material)
+    scene.add(line)
+
+    // rendererはcanvas要素の参照を保持しているので、そこに画像情報を書き出せる。
+    renderer.render(scene, camera)
+  </script>
+</dody>
+
+</html>

@@ -15,9 +15,9 @@
 </head>
 <dody>
   <script type="module">
-     import * as THREE from 'https://unpkg.com/three@0.120/build/three.module.js';
+    import * as THREE from 'https://unpkg.com/three@0.120/build/three.module.js';
 
-      const scene = new THREE.Scene()
+    const scene = new THREE.Scene()
     // Perspectiveというのはどういう意味だろうか？
     // 直訳だと、遠近法、見通し
     // 他のカメラもいっぱいあるがどうもピント来ない名前。
@@ -45,9 +45,15 @@
     // こいつのサイズってなんなんだ？
     // ジオメトリには点と面の情報があるらしい
     const geometry = new THREE.BoxGeometry();
+
     // マテリアルにも種類があるらしい。Meshだけだと思ってましたわ。
     // かなり数がある。これはだいぶ端折って教えてもらった感じですな。
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    // wireframe表示のほうがそれっぽいぞ！
+    const material = new THREE.MeshBasicMaterial({
+      color: 0x00ff00,
+      wireframe: true
+    })
+
     // なんでメッシュっていうんでしょうね？名前に馴染みが無くて難しいなあ。
     const cube = new THREE.Mesh(geometry, material)
     scene.add(cube)
