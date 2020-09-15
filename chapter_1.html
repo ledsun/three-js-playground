@@ -1,0 +1,121 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>初めてのThree.js 1章 サンプル</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<dody>
+  初めてのThree.js 1章 サンプル
+  <div id="Stats-output"></div>
+  <div id="WebGL-output"></div>
+
+  <script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.120/build/three.module.js';
+    import Stats from 'https://mrdoob.github.io/stats.js/build/stats.module.js'
+
+    function initStats() {
+      const stats = new Stats();
+      stats.setMode(0)
+      stats.domElement.style.position = 'absolute'
+      stats.domElement.style.top = '24px'
+      stats.domElement.style.left = '0px'
+      document.getElementById('Stats-output').appendChild(stats.domElement)
+
+      return stats
+    }
+
+    function init() {
+      const scene = new THREE.Scene()
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+      const renderer = new THREE.WebGLRenderer()
+      renderer.setClearColor(0xEEEEEE)
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.shadowMap.enabled = true
+
+      // X方向が赤、Y方向が緑、Z方向が青
+      const axes = new THREE.AxesHelper(20)
+      scene.add(axes)
+
+      // 第1引数がX方向、第2引数がY方向
+      const planeGeometry = new THREE.PlaneGeometry(60, 20)
+      const planeMaterial = new THREE.MeshLambertMaterial({ color: 0xcccccc })
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial)
+
+      // X軸を中心に回転
+      plane.rotation.x = - 0.5 * Math.PI
+      // 回転の移動に順番は関係ない
+      plane.position.x = 15
+      plane.position.y = 0
+      plane.position.z = 0
+
+      plane.receiveShadow = true;
+
+      scene.add(plane)
+
+      // 第1引数がX方向、第2引数がY方向、第3引数がZ方向
+      const cubeGeometry = new THREE.BoxGeometry(4, 4, 4)
+      const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 })
+      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+      cube.position.x = -4
+      cube.position.y = 3
+      cube.position.z = 0
+
+      cube.castShadow = true
+
+      scene.add(cube)
+
+      const spherGeometry = new THREE.SphereGeometry(4, 20, 20)
+      const spherMaterial = new THREE.MeshLambertMaterial({ color: 0x0000ff })
+      const spher = new THREE.Mesh(spherGeometry, spherMaterial)
+
+      spher.position.x = 20
+      spher.position.y = 4
+      spher.position.z = 2
+
+      spher.castShadow = true
+
+      scene.add(spher)
+
+      const spotLight = new THREE.SpotLight(0xffffff)
+      spotLight.position.set(-20, 30, -5)
+      spotLight.castShadow = true
+      scene.add(spotLight)
+
+      camera.position.x = -30
+      camera.position.y = 40
+      camera.position.z = 30
+      // シーンの中心を向く
+      camera.lookAt(scene.position)
+
+      document.getElementById('WebGL-output').appendChild(renderer.domElement)
+
+      const stats = initStats()
+      let step = 0
+      !function renderScene() {
+        stats.update()
+
+        cube.rotation.x += 0.02
+        cube.rotation.y += 0.02
+        cube.rotation.z += 0.02
+
+        step += 0.04
+        spher.position.x = 20 + ( 10 * (Math.cos(step)))
+        spher.position.y = 2 + ( 10 * Math.abs(Math.sin(step)))
+
+        requestAnimationFrame(renderScene)
+        renderer.render(scene, camera)
+      }()
+    }
+
+    window.onload = init
+  </script>
+</dody>
+
+</html>
