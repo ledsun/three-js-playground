@@ -1,6 +1,6 @@
 Three.jsの練習場です。
 
-- [初めてのThree.js 1章 サンプル](chapter1.html)
+- [初めてのThree.js 1章 サンプル](chapter_1.html)
 - [回転する立方体](cube.html)
 - [線](line.html)
 
